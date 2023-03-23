@@ -1,0 +1,15 @@
+Package: hciR2
+Title: Extra functions for HCI
+Version: 1.2
+Author: Chris Stubben
+Maintainer: Chris Stubben <chris.stubben@hci.utah.edu>
+Depends:
+    hciR
+Imports:
+    IRanges,
+    GenomicRanges,
+    GenomicFeatures
+License: GPL-3
+Encoding: UTF-8
+Description: This package contains additional functions for RNA-seq and other workflows.
+RoxygenNote: 7.2.3
