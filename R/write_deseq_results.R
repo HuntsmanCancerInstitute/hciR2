@@ -16,7 +16,7 @@
 #' }
 #' @export
 
-write_deseq_results <- function(result_all, sets, file = "DESeq.xlsx"){
+write_deseq_results <- function(result_all, sets, samples, file = "DESeq.xlsx"){
 
    ##  if results are a tibble (since simplify=TRUE by default)
    if(!class(result_all)[1] == "list"){
@@ -38,7 +38,8 @@ write_deseq_results <- function(result_all, sets, file = "DESeq.xlsx"){
    names(res1)  <- gsub( "/", "", names(res1))
 
    DESeq_tables <-  c( sum1, res1)
-   if(!missing(sets)) DESeq_tables <-  c( sum1, res1, list(Sets=sets))
+   if(!missing(sets)) DESeq_tables <-  c(DESeq_tables, list(Sets=sets))
+   if(!missing(samples)) DESeq_tables <-  c(DESeq_tables, list(Samples=samples))
    message("Saving ", length(DESeq_tables), " worksheets to ", file)
   # DESeq_tables
    openxlsx::write.xlsx(DESeq_tables, file = file, rowNames= FALSE )

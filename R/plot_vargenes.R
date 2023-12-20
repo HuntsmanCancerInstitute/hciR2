@@ -22,9 +22,11 @@ plot_vargenes <- function(x, column, n = 20, barwidth=NULL, first=FALSE, ...){
    if(!column %in% names(x)) stop("Column is missing")
    if(is_tibble(x)){
       # gene name in column 2?
-      x$gene_name[x$gene_name==""] <- x$id[x$gene_name==""] 
+      x$gene_name[x$gene_name==""] <- x$id[x$gene_name==""]
       x <- as_matrix( x[,-1])
    }
+   ## match violin plot colors
+   clrs <- c(scales:::hue_pal()(ncol(x) -1), "#CCCCCC")
    x <- as.data.frame(x)
    colNames <- colnames(x)
    n1 <- order(x[[column]], decreasing=TRUE)
@@ -36,6 +38,7 @@ plot_vargenes <- function(x, column, n = 20, barwidth=NULL, first=FALSE, ...){
      # column first and residuals last
      n2 <- sort(unique(z$col))
      z$col <- factor(z$col, levels = c(column, n2[!n2 %in% c( column, "Residuals")], "Residuals"))
+     clrs <- clrs[match(levels(z$col), colNames  )]
    }else{
       z$col <- factor(z$col, levels = colNames )
    }
@@ -44,6 +47,7 @@ plot_vargenes <- function(x, column, n = 20, barwidth=NULL, first=FALSE, ...){
       bar=list(pointWidth=barwidth)) %>%
    highcharter::hc_yAxis(title=list(text="Variance explained (%)"), max=100, reversedStacks=FALSE) %>%
    highcharter::hc_xAxis(title=list(text="")) %>%
+   highcharter::hc_colors(clrs)  %>%
    highcharter::hc_plotOptions( series=list(states=list(inactive=list(opacity=1)))) %>%
    highcharter::hc_size(...) %>%
    highcharter::hc_exporting(enabled=TRUE, filename = "vargenes")

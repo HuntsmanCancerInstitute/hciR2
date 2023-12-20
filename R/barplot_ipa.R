@@ -10,7 +10,7 @@
 #' @param barwidth geom_bar width, default 0.7
 #' @param name_category add Category to x-axis name, default FALSE
 #' @param stacked plot stacked barchart, default FALSE
-#' @param results DESeq results loaded into IPA, required for stacked pathway barplot
+#' @param results Analysis Ready Molecules from read_ipa, required for stacked pathway barplot
 #'
 #' @return a ggplot
 #'
@@ -20,7 +20,7 @@
 #' \dontrun{
 #' ipa1 <- read_ipa("IPA_export_all.txt")
 #' barplot_ipa(ipa1[[2]])
-#' barplot_ipa(ipa1[[2]], stacked=TRUE, results=res[[2]])
+#' barplot_ipa(ipa1[[2]], stacked=TRUE, results=ipa1[[10]])
 #' barplot_ipa(ipa1[[3]], name_cat=TRUE, wrap=30)
 #' }
 #' @export
@@ -46,12 +46,20 @@ barplot_ipa <- function(ipa, top = 15, pvalue = 0.05, wrap = 30, barwidth = 0.7,
 		    coord_flip() +
    	    scale_fill_gradient2(name = "Z-score", low = "blue", mid = "white", high = "orange", limits=c(-n1, n1))
    } else {
-     ## STACKED barplot - pathways
+     ## STACKED barplot - Pathway in column 1
       if(!"Categories" %in% names(p1)){
         if(missing(results)) stop("Stacked barchart with pathways requires DESeq results with log2FoldChange")
-        if("human_homolog" %in% names(results)) results$gene_name <- results$human_homolog
-        # remove duplicates
-        results <- arrange(results, padj) %>% filter(!duplicated(gene_name))
+        ## Analysis ready molecules  - should be default since IDs are sometimes mapped to different gene names
+        if( "Expr Log Ratio" %in% names(results)){
+              colnames(results)[2] <- "gene_name"
+              ## not always 3rd column
+              colnames(results)[colnames(results) =="Expr Log Ratio"] <- "log2FoldChange"
+        }else{
+        ## DESeq results
+          if("human_homolog" %in% names(results)) results$gene_name <- results$human_homolog
+           # remove duplicates
+          results <- arrange(results, padj) %>% filter(!duplicated(gene_name))
+       }
         z <- head(p1, top)  %>%
            arrange(desc(row_number())) %>%
              mutate(Pathway = wrap_string(Pathway, wrap)) %>%
