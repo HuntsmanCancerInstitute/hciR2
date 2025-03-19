@@ -66,6 +66,8 @@ riboseq_coverage_starts <- function(cds_by_tx, aln, average= TRUE,
    #            `last 100 bp`=summary(n2), .id="transcript")
 
       message("Read starts from ", length(n0), " transcripts")
+     if(length(n0) >0){
+
    #   print( data.frame(sum3, check.names=FALSE))
       nX1 <- -50:100
       nX2 <- -100:50
@@ -75,11 +77,21 @@ riboseq_coverage_starts <- function(cds_by_tx, aln, average= TRUE,
       x1 <-  methods::as( methods::as(cvg1, "RleViews"), "matrix")
       x2 <-  methods::as( methods::as(cvg2, "RleViews"), "matrix")
       # how to group transcripts by gene?
-  # https://plastid.readthedocs.io/en/latest/generated/plastid.bin.metagene.html
-      x <- tibble::tibble(start = nX1, avg_start=colMeans(x1),
-            n_start=colSums(x1 != 0), frame = as.factor(nX1 %% 3), end = nX2,
-            avg_end=colMeans(x2), n_end=colSums(x2 != 0), sample=name,
+      # https://plastid.readthedocs.io/en/latest/generated/plastid.bin.metagene.html
+      x <- tibble::tibble(
+            start = nX1,
+            avg_start=colMeans(x1),
+            n_start=colSums(x1 != 0),
+            frame = as.factor(nX1 %% 3),
+            end = nX2,
+            avg_end=colMeans(x2),
+            n_end=colSums(x2 != 0),
+            sample=name,
             transcripts=length(n0))
+
+        }else{
+            x <- tibble::tibble()
+        }
      }else{
        x <- cvg
     }

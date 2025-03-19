@@ -1,6 +1,6 @@
 Package: hciR2
 Title: Extra functions for HCI
-Version: 1.2
+Version: 1.3
 Author: Chris Stubben
 Maintainer: Chris Stubben <chris.stubben@hci.utah.edu>
 Depends:
@@ -12,4 +12,4 @@ Imports:
 License: GPL-3
 Encoding: UTF-8
 Description: This package contains additional functions for RNA-seq and other workflows.
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2

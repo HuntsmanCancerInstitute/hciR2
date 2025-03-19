@@ -4,7 +4,15 @@
 \alias{plot_top_enrichr}
 \title{Cluster -log10 pvalues from top gene sets in each contrast}
 \usage{
-plot_top_enrichr(e1, db = 1, top_n = 5, trim = 50, min_p = 100, ...)
+plot_top_enrichr(
+  e1,
+  db = 1,
+  top_n = 5,
+  trim = 50,
+  min_p = 100,
+  complexHeatmap = TRUE,
+  ...
+)
 }
 \arguments{
 \item{e1}{results from enrichr_all}
@@ -16,6 +24,8 @@ plot_top_enrichr(e1, db = 1, top_n = 5, trim = 50, min_p = 100, ...)
 \item{trim}{Trim long names, default 50}
 
 \item{min_p}{Minimum p-value to plot (to adjust scale)}
+
+\item{complexHeatmap}{use pheatmap from ComplexHeatmap}
 
 \item{\dots}{additional options passed to pheatmap}
 }

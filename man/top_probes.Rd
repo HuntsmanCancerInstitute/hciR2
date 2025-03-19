@@ -4,14 +4,7 @@
 \alias{top_probes}
 \title{Get a count matrix of top probes}
 \usage{
-top_probes(
-  res,
-  eset,
-  padj = 0.05,
-  n = 40,
-  row_names = "Gene.Symbol",
-  by = "probe"
-)
+top_probes(res, eset, padj = 0.05, n = 40, row_names = "Gene.Symbol", by = 1)
 }
 \arguments{
 \item{res}{results from top_tibble}
@@ -24,7 +17,7 @@ top_probes(
 
 \item{row_names}{row names, Gene.Symbol default}
 
-\item{by}{join results to count rownames by this column, default probe}
+\item{by}{join results to count rownames by this column, default column 1}
 }
 \value{
 A tibble with colData attribute

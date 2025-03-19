@@ -12,6 +12,7 @@
 #'   data(egSymb)   # in gage
 #'   plot_kegg(res, "Cytokine")
 #'  }
+#' @export
 
 plot_kegg <- function(x, pathway_name){
  y <- unique(kegg_hsa[, 1:3]) %>% filter(grepl(pathway_name, pathway))

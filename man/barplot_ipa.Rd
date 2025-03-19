@@ -30,7 +30,7 @@ barplot_ipa(
 
 \item{stacked}{plot stacked barchart, default FALSE}
 
-\item{results}{DESeq results loaded into IPA, required for stacked pathway barplot}
+\item{results}{Analysis Ready Molecules from read_ipa, required for stacked pathway barplot}
 }
 \value{
 a ggplot
@@ -43,7 +43,7 @@ percent of up and down-regulated genes or activated and inhibited regulators by 
 \dontrun{
 ipa1 <- read_ipa("IPA_export_all.txt")
 barplot_ipa(ipa1[[2]])
-barplot_ipa(ipa1[[2]], stacked=TRUE, results=res[[2]])
+barplot_ipa(ipa1[[2]], stacked=TRUE, results=ipa1[[10]])
 barplot_ipa(ipa1[[3]], name_cat=TRUE, wrap=30)
 }
 }

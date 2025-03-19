@@ -7,7 +7,7 @@
 #' @param padj adjusted p-value cutoff, default 0.05
 #' @param n number of top probes, default 40
 #' @param row_names row names, Gene.Symbol default
-#' @param by join results to count rownames by this column, default probe
+#' @param by join results to count rownames by this column, default column 1
 #'
 #' @return A tibble with colData attribute
 #'
@@ -21,10 +21,16 @@
 #' }
 #' @export
 
-top_probes <- function(res, eset,  padj = 0.05, n=40, row_names = "Gene.Symbol", by="probe"){
-   if(!class(eset) == "ExpressionSet") stop("eset shoud be a ExpressionSet")
+top_probes <- function(res, eset,  padj = 0.05, n=40, row_names = "Gene.Symbol", by=1){
+   if(class(eset) == "ExpressionSet"){
    esetx <- Biobase::exprs(eset)
    colx <- Biobase::pData(eset)
+   } else if(class(eset) == "SummarizedExperiment"){
+     esetx <- SummarizedExperiment::assay(se0)
+     colx <- as.data.frame(SummarizedExperiment::colData(se0))
+   }else{
+     stop("eset shoud be a ExpressionSet or SummarizedExperiment")
+   }
    x <- dplyr::filter(res, adj.P.Val < padj)
     if(nrow(x)==0) stop("No matching rows with padj < ", padj)
     if(nrow(x)==1) stop("Only one matching row, nothing to plot")

@@ -5,6 +5,7 @@
 #' @param top_n Number of top gene sets to plot
 #' @param trim Trim long names, default 50
 #' @param min_p Minimum p-value to plot (to adjust scale)
+#' @param complexHeatmap use pheatmap from ComplexHeatmap
 #' @param \dots additional options passed to pheatmap
 #'
 #' @return pheatmp
@@ -21,7 +22,7 @@
 #' }
 #' @export
 
-plot_top_enrichr <- function(e1, db=1, top_n=5, trim=50, min_p=100, ...){
+plot_top_enrichr <- function(e1, db=1, top_n=5, trim=50, min_p=100, complexHeatmap=TRUE, ...){
   if(class(e1)[1] == "list"){
      if(grepl("^[0-9]+$", db)) db <- names(e1)[db]
      if(is.na(db)) stop("No databases found, use a name or number < ", length(e1)+1)
@@ -61,5 +62,11 @@ plot_top_enrichr <- function(e1, db=1, top_n=5, trim=50, min_p=100, ...){
   # wrapping in pheatmap creates a large gap
   rownames(z) <- ifelse(nchar(rownames(z)) > trim,
 				 paste0(substr(rownames(z), 1, trim-2), "..."), rownames(z))
-  pheatmap::pheatmap(z, color = clrs, ...)
+  if(complexHeatmap){
+    ComplexHeatmap::pheatmap(z,  color = clrs,
+      heatmap_legend_param = list(title = "-log10\npvalue", tick_length = unit(0, "mm"),
+      legend_width = unit(50, "mm")) , ...)
+  }else{
+    pheatmap::pheatmap(z, color = clrs, ...)
+  }
 }

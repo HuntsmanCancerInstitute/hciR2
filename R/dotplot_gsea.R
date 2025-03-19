@@ -35,19 +35,7 @@ dotplot_gsea <- function(fgsea_all_res, top=7, pad=0.1, wrap=50, ...){
     ylab("")  +
     theme_bw() +
     theme(axis.text.y=element_text(size=10)) +
-    scale_size("Adjusted\n p-value", trans = minus.log10) +
+    scale_size("Adjusted\n p-value", trans = minus_log10) +
     facet_grid(. ~ enriched, scales = "free") +
     scale_x_continuous(expand = expansion(mult = c(pad, pad)), ...)
 }
-
-# wrap long names
-wrap_string <- function(x, length = 50){
-   paste0(substr(x, 1, length-1), sub(" ", "\n", substring(x, length)))
-}
-
-# p-value dot size using https://rdrr.io/github/surh/HMVAR/src/R/plotgg_manhattan.r
-minus.log10 <- scales::trans_new("minus.log10",
-                  transform = function(x) -log10(x),
-                  inverse   = function(x) 10^(-x),
-                  breaks    = scales::log_breaks(base = 10),
-                  domain    = c(0,Inf))

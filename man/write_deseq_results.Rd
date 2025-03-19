@@ -4,7 +4,7 @@
 \alias{write_deseq_results}
 \title{Write DESeq results}
 \usage{
-write_deseq_results(result_all, sets, file = "DESeq.xlsx")
+write_deseq_results(result_all, sets, samples, file = "DESeq.xlsx")
 }
 \arguments{
 \item{result_all}{a list from \code{results_all}}

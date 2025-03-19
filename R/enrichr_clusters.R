@@ -34,7 +34,7 @@ enrichr_clusters <- function(clust, celldbs, padj = 0.1){
    names(e1) <- celldbs
    for(i in 1:n2){
 	  # no results returns data.frame with all logical columns
-	  z <- map(c1, celldbs[i])
+	  z <- purrr::map(c1, celldbs[i])
     z2 <- bind_rows(z[sapply(z, nrow) > 0], .id = "cluster") %>% as_tibble()
      if(nrow(z2) == 0){
          message("WARNING: no matches to ", celldbs[i], ". Please check spelling")
