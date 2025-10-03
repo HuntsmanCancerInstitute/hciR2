@@ -54,20 +54,22 @@ enrichr_all <- function(res, celldbs, deseq.padj = 0.05, fisher.padj = 0.05, log
 		     message("  ", length(sig), " significant genes (dropped ", n2a, " duplicate or missing gene names)")
          # print enrichR output for first result table only
 		     if(i == 1){
-            enrich[[i]] <- enrichR::enrichr(sig, celldbs)
-		     }else{
-			     ## suppress cat
-			     invisible(capture.output( enrich[[i]] <- enrichR::enrichr(sig, celldbs)))
-		    }
+             x <- enrichR::enrichr(sig, celldbs)
+         }else{
+             ## suppress cat
+             invisible(capture.output( x <- enrichR::enrichr(sig, celldbs)))
+         }
+          y <- lapply(x, function(y) as_tibble(filter(y, Adjusted.P.value< fisher.padj )))
+          # no results causes error with bind_rows
+          y[sapply(y, nrow)==0] <- NULL
+         enrich[[i]] <- y
      }
   }
   n2 <- length(celldbs)
   x  <- vector("list", n2)
   names(x) <- celldbs
   for(i in 1:n2){
-      x[[i]] <- dplyr::bind_rows(purrr::map(enrich, celldbs[i]), .id="contrast") %>%
-      tibble::as_tibble() %>%
-      dplyr::filter(Adjusted.P.value < fisher.padj)
-   }
-   x
+      x[[i]] <- dplyr::bind_rows(purrr::map(enrich, celldbs[i]), .id="contrast")  
+  }
+  x
 }

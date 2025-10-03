@@ -22,7 +22,7 @@
 multi_enrich_plot  <- function(x, fc, db, n=4, contrast, ncol=2,  scaleplots = 0.95, sameyaxis=TRUE){
   ## format subtitle with NES and Padj
   x$NES <- format(round(x$NES, digits=2), nsmall = 2)
-  x$p <- ifelse(x$padj < 0.01, formatC(x$padj, format = "e", digits = 0), formatC(x$padj, digits = 2, flag="#") )
+  x$p <- ifelse(x$padj < 0.001, formatC(x$padj, format = "e", digits = 1), formatC(x$padj, digits = 2, flag="#") )
   p <- vector("list", n)
   for(i in 1:n){
     # use NULL if missing
